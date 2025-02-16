@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Teseisa</title>
+    <link href="Portfolio_-_Teseisa-web-resources/css/idGeneratedStyles.css" rel="stylesheet" type="text/css" />
+	<link href="Portfolio_-_Teseisa-web-resources/css/myCustomCSS.css" rel="stylesheet" type="text/css" />
+	<script src="Portfolio_-_Teseisa-web-resources/script/FontData.js" type="text/javascript"></script>
+	<script src="Portfolio_-_Teseisa-web-resources/script/myCustomJS.js" type="text/javascript"></script>
+	<script src="Portfolio_-_Teseisa-web-resources/script/idGeneratedScript.js" type="text/javascript"></script>
+	<script>function onDOMContentLoaded() { window.top.onFrameDOMLoaded(); } document.addEventListener("DOMContentLoaded", onDOMContentLoaded, false);</script>
+    <link rel="stylesheet" href="styles.css"> <!-- Asegúrate de incluir CSS común -->
+</head>
+<body>
+
+    <div id="contenido"></div>
+
+    <script>
+        const archivos = [
+            "Portfolio_-_Teseisa-1.html",
+            "Portfolio_-_Teseisa-2.html",
+            "Portfolio_-_Teseisa-3.html",
+            "Portfolio_-_Teseisa-4.html",
+            "Portfolio_-_Teseisa-5.html",
+            "Portfolio_-_Teseisa-6.html",
+            "Portfolio_-_Teseisa-7.html",
+            "Portfolio_-_Teseisa-8.html",
+            "Portfolio_-_Teseisa-9.html",
+            "Portfolio_-_Teseisa-10.html",
+            "Portfolio_-_Teseisa-11.html",
+            "Portfolio_-_Teseisa-12.html"
+        ];
+
+        async function cargarHTML() {
+            let contenedor = document.getElementById("contenido");
+
+            for (let archivo of archivos) {
+                try {
+                    let respuesta = await fetch(archivo);
+                    if (!respuesta.ok) throw new Error(`Error cargando ${archivo}`);
+                    
+                    let contenido = await respuesta.text();
+                    let div = document.createElement("div");
+                    div.classList.add("html-section");
+                    div.innerHTML = contenido;
+                    contenedor.appendChild(div);
+                    ejecutarScripts(div);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            // Esperar a que los scripts carguen antes de llamar RegisterInteractiveHandlers
+            setTimeout(() => {
+                if (typeof RegisterInteractiveHandlers === "function") {
+                    console.log("Ejecutando RegisterInteractiveHandlers...");
+                    RegisterInteractiveHandlers();
+                } else {
+                    console.error("No se encontró la función RegisterInteractiveHandlers.");
+                }
+            }, 1500);
+        }
+
+
+
+        function ejecutarScripts(elemento) {
+            let scripts = elemento.querySelectorAll("script");
+            scripts.forEach(script => {
+                let nuevoScript = document.createElement("script");
+                if (script.src) {
+                    nuevoScript.src = script.src;
+                    nuevoScript.async = false;
+                    document.body.appendChild(nuevoScript);
+                } else {
+                    try {
+                        let inlineScript = document.createElement("script");
+                        inlineScript.textContent = script.textContent;
+                        document.body.appendChild(inlineScript);
+                    } catch (error) {
+                        console.error("Error ejecutando script inline:", error);
+                    }
+                }
+            });
+        }
+
+
+
+        function inicializarBotones() {
+            console.log("Inicializando botones...");
+            let botones = document.querySelectorAll("button");
+            botones.forEach(boton => {
+                console.log(`Botón encontrado: ${boton.textContent}`);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            cargarHTML();
+        });
+    </script>
+
+</body>
+</html>
+
+
